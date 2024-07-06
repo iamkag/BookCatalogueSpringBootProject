@@ -55,7 +55,7 @@
         </tr>
         <tr>
             <th>Version</th>
-            <td th:text="${book.version}">Version</td>
+            <td th:text="${book.version}">Version Placeholder</td>
         </tr>
         <tr>
             <th>Publication Date</th>
@@ -63,23 +63,19 @@
         </tr>
         <tr>
             <th>Price in $</th>
-            <td th:text="${book.price}">Purice in $</td>
+            <td th:text="${book.price}">Price in $ Placeholder</td>
         </tr>
-        
     </table>
 
-    <table> 
-        <h2>Related Books by the Same Author(s)</h2>
-        <ul>
-            <li th:each="relatedBook : ${relatedBooks}">
-                <span th:text="'Title: ' + ${relatedBook.title}\n">Related Book Title</span>
-                <span th:text="' Author: ' + ${relatedBook.authorsString}">Authors</span>
-            </li>
-        </ul>
-    </table>
+    <h2>Related Books by the Same Author(s)</h2>
+    <ul class="author-books">
+        <li th:each="relatedBook : ${relatedBooks}">
+            <span th:text="'Title: ' + ${relatedBook.title}">Related Book Title</span>
+            <span th:text="' Author: ' + ${relatedBook.authorsString}">Authors</span>
+        </li>
+    </ul>
     
-        <a href="/all-books">Back to All Books</a>
-    </div>
+    <a href="/all-books">Back to All Books</a>
 
 </body>
 </html>
