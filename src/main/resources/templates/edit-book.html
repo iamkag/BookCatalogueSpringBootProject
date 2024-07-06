@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Edit Book</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+</head>
+
+<body>
+    <div class="container my-5">
+        <h3>Edit Book</h3>
+        
+        <!-- Display message if it exists -->
+        <div th:if="${message}" class="alert alert-danger">
+            <p th:text="${message}"></p>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="col-md-10">
+                    <form th:action="@{/updatebook}" th:object="${book}" method="post">
+                        <div class="row">
+                            <div class="form-group col-md-8">
+                                <label for="title" class="col-form-label">Book Title</label> 
+                                <input type="text" th:field="*{title}" class="form-control" id="title" placeholder="Book Title" />
+                            </div>
+                            <div class="form-group col-md-8">
+                                <label for="firstName" class="col-form-label">Author First Name</label> 
+                                <input type="text" th:field="*{authors[0].firstName}" class="form-control" id="firstName" placeholder="Author First Name" />
+                            </div>
+                            <div class="form-group col-md-8">
+                                <label for="lastName" class="col-form-label">Author Last Name</label> 
+                                <input type="text" th:field="*{authors[0].lastName}" class="form-control" id="lastName" placeholder="Author Last Name" />
+                            </div>
+                            <div class="form-group col-md-8">
+                                <label for="version" class="col-form-label">Book Version</label> 
+                                <input type="number" th:field="*{version}" class="form-control" id="version" placeholder="Book Version" />
+                            </div>
+                            <div class="form-group col-md-8">
+                                <label for="price" class="col-form-label">Book Price</label> 
+                                <input type="number" step="0.01" th:field="*{price}" class="form-control" id="price" placeholder="Book Price" />
+                            </div>
+                            <div class="form-group col-md-8">
+                                <label for="publishingDate" class="col-form-label">Publication Date</label> 
+                                <input type="date" th:field="*{publishingDate}" class="form-control" id="publishingDate" placeholder="Publication Date" />
+                            </div>
+
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+
+                            <input type="hidden" th:field="*{id}">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Book</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container my-5">
+        <h3>Add Book</h3>
+        
+        <!-- Display message if it exists -->
+        <div th:if="${message}" class="alert alert-danger">
+            <p th:text="${message}"></p>
+        </div>
+        
+        <div class="card">
+            <div class="card-body">
+                <div class="col-md-10">
+                    <form th:action="@{/addbook}" th:object="${book}" method="post">
+                        <div class="row">
+                            <div class="form-group col-md-8">
+                                <label for="title" class="col-form-label">Book Title</label>
+                                <input type="text" th:field="*{title}" class="form-control" id="title" placeholder="Book Title" required />
+                            </div>
+                            <div class="form-group col-md-8">
+                                <label for="version" class="col-form-label">Book Version</label>
+                                <input type="number" th:field="*{version}" class="form-control" id="version" placeholder="Book Version" required />
+                            </div>
+                            <div class="form-group col-md-8">
+                                <label for="price" class="col-form-label">Book Price</label>
+                                <input type="number" step="0.01" th:field="*{price}" class="form-control" id="price" placeholder="Book Price" required />
+                            </div>
+                            <div class="form-group col-md-8">
+                                <label for="publishingDate" class="col-form-label">Publication Date</label>
+                                <input type="date" th:field="*{publishingDate}" class="form-control" id="publishingDate" placeholder="Publication Date" required />
+                            </div>
+                            <div class="form-group col-md-8">
+                                <label for="authors" class="col-form-label">Authors (separate names with commas)</label>
+                                <input type="text" th:field="*{authors}" class="form-control" id="authors" placeholder="Authors" required />
+                            </div>
+                                                        
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                            <input type="hidden" th:field="*{id}">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Info</title>
+    <!-- Add any necessary CSS styles here -->
+    <style>
+        /* Basic styles for demonstration */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        td {
+            text-align: left;
+        }
+        .book-title {
+            font-weight: bold;
+        }
+        .author-books {
+            font-size: 0.9em;
+            color: #666;
+            list-style-type: none;
+            padding: 0;
+        }
+        .author-books li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Book Info</h1>
+
+    <table>
+        <tr>
+            <th>Book Title</th>
+            <td class="book-title" th:text="${book.bookTitle}">Book Title Placeholder</td>
+        </tr>
+        <tr>
+            <th>Author</th>
+            <td th:text="${book.author}">Author Placeholder</td>
+        </tr>
+        <tr>
+            <th>Summary</th>
+            <td th:text="${book.summary}">Summary Placeholder</td>
+        </tr>
+        <tr>
+            <th>Publication</th>
+            <td th:text="${book.publication}">Publication Placeholder</td>
+        </tr>
+        <tr>
+            <th>Books from the Same Author</th>
+            <td>
+                <span th:each="sameAuthorBook, iterStat : ${booksFromSameAuthor}">
+                    <span th:text="${sameAuthorBook.bookTitle}"></span>
+                    <span th:if="${!iterStat.last}">, </span>
+                </span>
+            </td>
+        </tr>
+    </table>
+    <div>
+        <a href="/all-books">Back to All Books</a>
+    </div>
+
+</body>
+</html>
