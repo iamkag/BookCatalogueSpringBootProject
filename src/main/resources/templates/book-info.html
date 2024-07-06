@@ -61,7 +61,7 @@
             <th>Publication</th>
             <td th:text="${book.publication}">Publication Placeholder</td>
         </tr>
-        <tr>
+        <!-- <tr>
             <th>Books from the Same Author</th>
             <td>
                 <span th:each="sameAuthorBook, iterStat : ${booksFromSameAuthor}">
@@ -69,7 +69,7 @@
                     <span th:if="${!iterStat.last}">, </span>
                 </span>
             </td>
-        </tr>
+        </tr> -->
     </table>
     <div>
         <a href="/all-books">Back to All Books</a>

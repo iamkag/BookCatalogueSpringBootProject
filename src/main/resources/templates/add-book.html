@@ -38,7 +38,7 @@
                             </div>
                             <div class="form-group col-md-8">
                                 <label for="authors" class="col-form-label">Authors (separate names with commas)</label>
-                                <input type="text" th:field="*{authors}" class="form-control" id="authors" placeholder="Authors" required />
+                                <input type="text" th:field="*{authorsString}" class="form-control" id="authors" placeholder="Authors" th:value="*{authors}" required />
                             </div>
                                                         
                             <div class="col-md-6">

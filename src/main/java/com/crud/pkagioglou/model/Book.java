@@ -16,9 +16,13 @@ import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -122,4 +126,26 @@ public class Book extends AuditModel {
         
         this.authors = authors;
     }
+
+    public String getAuthorsString() {
+        return authors.stream()
+                      .map(author -> author.getFirstName() + " " + author.getLastName())
+                      .collect(Collectors.joining(", "));
+    }
+
+    public void setAuthorsString(String authorsString) {
+        this.authors = Arrays.stream(authorsString.split(","))
+                             .map(String::trim)
+                             .map(fullName -> {
+                                 String[] nameParts = fullName.split(" ");
+                                 if (nameParts.length == 2) {
+                                     return new Author(null, nameParts[0], nameParts[1], new HashSet<>());
+                                 } else {
+                                     return null; // or handle the error appropriately
+                                 }
+                             })
+                             .filter(Objects::nonNull)
+                             .collect(Collectors.toSet());
+    }
+    
 }

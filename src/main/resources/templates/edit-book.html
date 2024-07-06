@@ -29,12 +29,8 @@
                                 <input type="text" th:field="*{title}" class="form-control" id="title" placeholder="Book Title" />
                             </div>
                             <div class="form-group col-md-8">
-                                <label for="firstName" class="col-form-label">Author First Name</label> 
-                                <input type="text" th:field="*{authors[0].firstName}" class="form-control" id="firstName" placeholder="Author First Name" />
-                            </div>
-                            <div class="form-group col-md-8">
-                                <label for="lastName" class="col-form-label">Author Last Name</label> 
-                                <input type="text" th:field="*{authors[0].lastName}" class="form-control" id="lastName" placeholder="Author Last Name" />
+                                <label for="authors" class="col-form-label">Authors (separate names with commas)</label>
+                                <input type="text" th:field="*{authorsString}" class="form-control" id="authors" placeholder="Authors" required />
                             </div>
                             <div class="form-group col-md-8">
                                 <label for="version" class="col-form-label">Book Version</label> 
