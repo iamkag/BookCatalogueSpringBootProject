@@ -79,11 +79,16 @@ public class BookController {
 
     @PostMapping("/addbook")
     public String createBook(Book book, Model model) {
+        if (bookService.isDuplicateBook(book)) {
+            model.addAttribute("message", "Book with the same title, version, and author already exists.");
+            model.addAttribute("book", book);
+            return "add-book";
+        }
         boolean added = bookService.addBook(book);
         if (added) {
             return "redirect:/all-books";
         } else {
-            model.addAttribute("message", "Book with the same title, author, and publication already exists.");
+            model.addAttribute("message", "Failed to add the book. Please try again.");
             model.addAttribute("book", book);
             return "add-book";
         }
@@ -97,11 +102,16 @@ public class BookController {
 
     @PostMapping("/updatebook")
     public String updateBook(Book book, Model model) {
+        if (bookService.isDuplicateBook(book)) {
+            model.addAttribute("message", "Book with the same title, version, and author already exists.");
+            model.addAttribute("book", book);
+            return "edit-book";
+        }
         boolean update = bookService.updateBook(book);
         if (update) {
             return "redirect:/all-books";
         } else {
-            model.addAttribute("message", "Book with the same title, author, and publication already exists.");
+            model.addAttribute("message", "Failed to update the book. Please try again.");
             model.addAttribute("book", book);
             return "edit-book";
         }

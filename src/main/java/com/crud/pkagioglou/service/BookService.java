@@ -15,32 +15,32 @@ import com.crud.pkagioglou.repository.BookRepository;
 public class BookService {
 
     @Autowired
-    BookRepository repository;
+    BookRepository bookRepository;
 
     public List<Book> findAllBooks() {
-        return repository.findAll();
+        return bookRepository.findAll();
     }
 
     public Book findBookById(Long bookId) {
-        return repository.findById(bookId).orElse(new Book());
+        return bookRepository.findById(bookId).orElse(new Book());
     }
 
     public boolean updateBook(Book book) {
-        repository.save(book);
+        bookRepository.save(book);
         return true;
     }
 
     public void deleteById(Long bookId) {
-        repository.deleteById(bookId);
+        bookRepository.deleteById(bookId);
     }
 
     public boolean addBook(Book book) {
-        repository.save(book);
+        bookRepository.save(book);
         return true;
     }
 
     public List<Book> findBooksByAuthorFullName(String firstName, String lastName) {
-        return repository.findByAuthorFullName(firstName, lastName);
+        return bookRepository.findByAuthorFullName(firstName, lastName);
     }
 
     public Set<Book> findBooksByAuthors(Set<Author> authors) {
@@ -50,5 +50,16 @@ public class BookService {
             books.addAll(booksByAuthor);
         }
         return books;
+    }
+
+    // Method to check if a book is a duplicate
+    public boolean isDuplicateBook(Book book) {
+        List<Book> existingBooks = bookRepository.findByTitleAndVersion(book.getTitle(), book.getVersion());
+        for (Book existingBook : existingBooks) {
+            if (existingBook.getAuthors().equals(book.getAuthors())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
