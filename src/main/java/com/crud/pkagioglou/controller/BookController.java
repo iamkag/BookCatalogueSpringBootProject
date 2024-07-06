@@ -112,4 +112,16 @@ public class BookController {
         bookService.deleteById(bookId);
         return "redirect:/all-books";
     }
+
+    @GetMapping("/info/{id}")
+    public String getBookInfo(@PathVariable("id") Long bookId, Model model) {
+        Book book = bookService.findBookById(bookId);
+        Set<Author> authors = book.getAuthors();
+        Set<Book> relatedBooks = bookService.findBooksByAuthors(authors);
+        relatedBooks.remove(book); // Remove the current book from the set of related books if it's present
+
+        model.addAttribute("book", book);
+        model.addAttribute("relatedBooks", relatedBooks);
+        return "book-info";
+    }
 }

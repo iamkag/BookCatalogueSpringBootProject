@@ -47,31 +47,37 @@
     <table>
         <tr>
             <th>Book Title</th>
-            <td class="book-title" th:text="${book.bookTitle}">Book Title Placeholder</td>
+            <td class="book-title" th:text="${book.title}">Book Title Placeholder</td>
         </tr>
         <tr>
-            <th>Author</th>
-            <td th:text="${book.author}">Author Placeholder</td>
+            <th>Author(s)</th>
+            <td th:text="${book.authorsString}">Author Placeholder</td>
         </tr>
         <tr>
-            <th>Summary</th>
-            <td th:text="${book.summary}">Summary Placeholder</td>
+            <th>Version</th>
+            <td th:text="${book.version}">Version</td>
         </tr>
         <tr>
-            <th>Publication</th>
-            <td th:text="${book.publication}">Publication Placeholder</td>
+            <th>Publication Date</th>
+            <td th:text="${book.publishingDate}">Publication Placeholder</td>
         </tr>
-        <!-- <tr>
-            <th>Books from the Same Author</th>
-            <td>
-                <span th:each="sameAuthorBook, iterStat : ${booksFromSameAuthor}">
-                    <span th:text="${sameAuthorBook.bookTitle}"></span>
-                    <span th:if="${!iterStat.last}">, </span>
-                </span>
-            </td>
-        </tr> -->
+        <tr>
+            <th>Price in $</th>
+            <td th:text="${book.price}">Purice in $</td>
+        </tr>
+        
     </table>
-    <div>
+
+    <table> 
+        <h2>Related Books by the Same Author(s)</h2>
+        <ul>
+            <li th:each="relatedBook : ${relatedBooks}">
+                <span th:text="'Title: ' + ${relatedBook.title}">Related Book Title</span>
+                <span th:text="' Author: ' + ${relatedBook.authorsString}">Authors</span>
+            </li>
+        </ul>
+    </table>
+    
         <a href="/all-books">Back to All Books</a>
     </div>
 
