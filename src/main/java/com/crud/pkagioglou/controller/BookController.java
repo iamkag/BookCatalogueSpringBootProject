@@ -32,23 +32,28 @@ public class BookController {
         binder.registerCustomEditor(Set.class, "authors", new CustomCollectionEditor(Set.class) {
             @Override
             protected Object convertElement(Object element) {
+                System.out.println("element: "+ element);
                 if (element != null) {
                     String authorsFullName = element.toString().trim();
-
+                    System.out.println("authorsFullName: "+authorsFullName);
                     String[] authors = authorsFullName.split(",");
+                    System.out.println("authors: "+authors);
                     Set<Author> authorSet = new HashSet<>();
                     for (String author : authors) {
                         String trimmedAuthor = author.trim();
+                        System.out.println("trimmedAuthor: "+ trimmedAuthor);
                         String[] nameParts = trimmedAuthor.split(" ");
                         Author authorObj = new Author();
-                        if (nameParts.length >= 2) {
-                            authorObj.setFirstName(nameParts[0]);
-                            authorObj.setLastName(nameParts[1]);
-                        } else if (nameParts.length == 1) {
+                        if (nameParts.length == 1) {
+                            System.out.println("Frist Name: " + nameParts[0]);
                             authorObj.setFirstName(nameParts[0]);
                             authorObj.setLastName("None");
+                        } else if (nameParts.length >= 2) {
+                            authorObj.setFirstName(nameParts[0]);
+                            authorObj.setLastName(nameParts[1]);
                         } else {
-                            continue;
+                            authorObj.setFirstName("None");
+                            authorObj.setLastName("None");
                         }
                         authorSet.add(authorObj);
                     }
@@ -58,6 +63,8 @@ public class BookController {
             }
         });
     }
+
+
 
     @GetMapping("/all-books")
     public String findAll(Model model, 
