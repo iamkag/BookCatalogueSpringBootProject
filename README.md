@@ -167,3 +167,13 @@ Below is the database schema representing the relationship between the `Book` an
 | BOOK_ID           | Long      | Foreign Key (Book.id)    |
 | AUTHOR_ID         | Long      | Foreign Key (Author.id)  |
 
+## AuditModel
+
+The `AuditModel` class is a base class for entities to automatically manage creation and update timestamps. It includes the following fields:
+
+- `createAt`: The date and time when the entity was created.
+- `updateAt`: The date and time when the entity was last updated.
+
+These fields are automatically populated and updated by Spring Data JPA's auditing features.
+
+
