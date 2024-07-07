@@ -11,7 +11,7 @@ The system uses two main tables:
 - **Book**: Contains details about each book, such as title, publication date, and other relevant information.
 - **Author**: Contains details about each author, such as first name, last name, and other relevant information.
 
-These tables are joined by the **author_id** field, creating a many-to-many relationship between books and authors. This means each book can have multiple authors, and each author can be associated with multiple books.
+These tables are joined by a many-to-many relationship between books and authors. This means each book can have multiple authors, and each author can be associated with multiple books.
 
 The application uses the **H2 database** for data storage, which is an in-memory database solution ideal for development and testing.
 
@@ -160,13 +160,6 @@ Below is the database schema representing the relationship between the `Book` an
 | firstName         | String    | Not Null, Size (1, 250)  |
 | lastName          | String    | Not Null, Size (1, 250)  |
 
-### Author_Book Table
-
-| Column Name       | Data Type | Constraints              |
-|-------------------|-----------|--------------------------|
-| BOOK_ID           | Long      | Foreign Key (Book.id)    |
-| AUTHOR_ID         | Long      | Foreign Key (Author.id)  |
-
 ## AuditModel
 
 The `AuditModel` class is a base class for entities to automatically manage creation and update timestamps. It includes the following fields:
@@ -175,5 +168,4 @@ The `AuditModel` class is a base class for entities to automatically manage crea
 - `updateAt`: The date and time when the entity was last updated.
 
 These fields are automatically populated and updated by Spring Data JPA's auditing features.
-
 
