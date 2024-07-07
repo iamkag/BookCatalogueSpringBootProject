@@ -60,15 +60,35 @@ public class BookController {
     }
 
     @GetMapping("/all-books")
-    public String findAll(Model model, @RequestParam(required = false) String sortBy, @RequestParam(required = false, defaultValue = "asc") String direction) {
+    public String findAll(Model model, 
+                          @RequestParam(required = false) String sortBy, 
+                          @RequestParam(required = false, defaultValue = "asc") String direction,
+                          @RequestParam(required = false) String title, 
+                          @RequestParam(required = false) String author) {
         List<Book> books;
         if ("title".equalsIgnoreCase(sortBy)) {
             books = bookService.findAllBooksSortedByTitle(direction);
         } else {
             books = bookService.findAllBooks();
         }
+    
+        if (title != null && !title.isEmpty()) {
+            books = bookService.filterBooksByTitle(books, title);
+        }
+    
+        if (author != null && !author.isEmpty()) {
+            books = bookService.filterBooksByAuthor(books, author);
+        }
+    
+        if (books.isEmpty()) {
+            model.addAttribute("errorMessage", "No books found for the given search criteria.");
+        }
+    
         model.addAttribute("books", books);
         model.addAttribute("sortDirection", direction);
+        model.addAttribute("title", title);
+        model.addAttribute("author", author);
+        model.addAttribute("totalBooks", books.size());
         return "all-books";
     }
 

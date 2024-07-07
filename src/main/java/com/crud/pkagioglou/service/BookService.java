@@ -1,16 +1,17 @@
 package com.crud.pkagioglou.service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import com.crud.pkagioglou.model.Author;
 import com.crud.pkagioglou.model.Book;
 import com.crud.pkagioglou.repository.BookRepository;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -22,16 +23,29 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    public Book findBookById(Long bookId) {
-        return bookRepository.findById(bookId).orElse(new Book());
-    }
-
     public List<Book> findAllBooksSortedByTitle(String direction) {
         Sort sort = Sort.by(Sort.Direction.ASC, "title");
         if ("desc".equalsIgnoreCase(direction)) {
             sort = Sort.by(Sort.Direction.DESC, "title");
         }
         return bookRepository.findAll(sort);
+    }
+
+    public List<Book> filterBooksByTitle(List<Book> books, String title) {
+        return books.stream()
+                .filter(book -> book.getTitle().toLowerCase().contains(title.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Book> filterBooksByAuthor(List<Book> books, String author) {
+        return books.stream()
+                .filter(book -> book.getAuthors().stream()
+                        .anyMatch(a -> (a.getFirstName() + " " + a.getLastName()).toLowerCase().contains(author.toLowerCase())))
+                .collect(Collectors.toList());
+    }
+
+    public Book findBookById(Long bookId) {
+        return bookRepository.findById(bookId).orElse(new Book());
     }
 
     public boolean updateBook(Book book) {
@@ -61,7 +75,6 @@ public class BookService {
         return books;
     }
 
-    // Method to check if a book is a duplicate
     public boolean isDuplicateBook(Book book) {
         List<Book> existingBooks = bookRepository.findByTitleAndVersion(book.getTitle(), book.getVersion());
         for (Book existingBook : existingBooks) {
