@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import com.crud.pkagioglou.model.Author;
 import com.crud.pkagioglou.model.Book;
@@ -23,6 +24,14 @@ public class BookService {
 
     public Book findBookById(Long bookId) {
         return bookRepository.findById(bookId).orElse(new Book());
+    }
+
+    public List<Book> findAllBooksSortedByTitle(String direction) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "title");
+        if ("desc".equalsIgnoreCase(direction)) {
+            sort = Sort.by(Sort.Direction.DESC, "title");
+        }
+        return bookRepository.findAll(sort);
     }
 
     public boolean updateBook(Book book) {

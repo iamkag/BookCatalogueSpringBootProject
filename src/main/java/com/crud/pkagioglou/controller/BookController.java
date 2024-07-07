@@ -34,9 +34,7 @@ public class BookController {
             protected Object convertElement(Object element) {
                 if (element != null) {
                     String authorsFullName = element.toString().trim();
-                    System.out.println("authorsFullName: " + authorsFullName);
 
-                    // Split the string by the comma to get individual authors
                     String[] authors = authorsFullName.split(",");
                     Set<Author> authorSet = new HashSet<>();
                     for (String author : authors) {
@@ -46,14 +44,11 @@ public class BookController {
                         if (nameParts.length >= 2) {
                             authorObj.setFirstName(nameParts[0]);
                             authorObj.setLastName(nameParts[1]);
-                            System.out.println("FirstName: " + nameParts[0] + ", LastName: " + nameParts[1]);
                         } else if (nameParts.length == 1) {
                             authorObj.setFirstName(nameParts[0]);
-                            authorObj.setLastName(""); // or some default value if needed
-                            System.out.println("FirstName: " + nameParts[0] + ", LastName: ");
+                            authorObj.setLastName("None");
                         } else {
-                            System.out.println("Invalid author name format: " + trimmedAuthor);
-                            continue; // Skip invalid author names
+                            continue;
                         }
                         authorSet.add(authorObj);
                     }
@@ -65,11 +60,18 @@ public class BookController {
     }
 
     @GetMapping("/all-books")
-    public String findAll(Model model) {
-        List<Book> books = bookService.findAllBooks();
+    public String findAll(Model model, @RequestParam(required = false) String sortBy, @RequestParam(required = false, defaultValue = "asc") String direction) {
+        List<Book> books;
+        if ("title".equalsIgnoreCase(sortBy)) {
+            books = bookService.findAllBooksSortedByTitle(direction);
+        } else {
+            books = bookService.findAllBooks();
+        }
         model.addAttribute("books", books);
+        model.addAttribute("sortDirection", direction);
         return "all-books";
     }
+
 
     @GetMapping("/add")
     public String launchAddBookPage(Model model) {
