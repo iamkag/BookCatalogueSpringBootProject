@@ -127,6 +127,8 @@ Alternatively, you can run the application using Docker:
 2. Navigate to the project directory.
 3. Execute the script by running `./build_and_run.sh` in your terminal.
 
+The application supports Docker, making it easy to deploy and run in any environment.
+
 ## Dependencies
 
 - Spring Boot
@@ -135,4 +137,33 @@ Alternatively, you can run the application using Docker:
 - Spring Boot Starter Thymeleaf
 - Hibernate
 - H2 Database
+
+## Database Schema
+
+Below is the database schema representing the relationship between the `Book` and `Author` tables.
+
+### Book Table
+
+| Column Name       | Data Type | Constraints              |
+|-------------------|-----------|--------------------------|
+| id                | Long      | Primary Key, Auto Increment |
+| title             | String    | Not Null, Size (1, 250)  |
+| version           | Integer   | Not Null                 |
+| price             | Double    | Not Null                 |
+| publishingDate    | Date      |                          |
+
+### Author Table
+
+| Column Name       | Data Type | Constraints              |
+|-------------------|-----------|--------------------------|
+| id                | Long      | Primary Key, Auto Increment |
+| firstName         | String    | Not Null, Size (1, 250)  |
+| lastName          | String    | Not Null, Size (1, 250)  |
+
+### Author_Book Table
+
+| Column Name       | Data Type | Constraints              |
+|-------------------|-----------|--------------------------|
+| BOOK_ID           | Long      | Foreign Key (Book.id)    |
+| AUTHOR_ID         | Long      | Foreign Key (Author.id)  |
 
