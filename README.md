@@ -1,113 +1,138 @@
+# Book Management System - README
 
-# Book App  [![Build Status](https://travis-ci.org/geraldoms/book-app.svg?branch=master)](https://travis-ci.org/geraldoms/book-app)  
-=======================
+## Overview
 
-This is a basic example of web application using Spring Boot 2. 
-The app uses the MySQL database for storage and the Flyway tool for the database migration. 
-It provides some RESTful APIs to access the information related to the Book and Author, a ManyToMany relationship. For the integration tests, an embedded H2 (in-memory) database is being used.   
+This project is a Spring MVC application designed for managing a collection of books. It provides functionality for listing, adding, editing, and deleting books. Each book can have multiple authors, and the system allows for filtering and sorting the list of books based on various criteria.
 
-## Requirements
-* MySQL 5.6 or later
-* JDK 8 or later
-* Maven 3.2 or later
+## Database Structure
 
-## Installation 
-`$ mvn package`
+The system uses two main tables:
 
-## Usage
+- **Book**: Contains details about each book, such as title, publication date, and other relevant information.
+- **Author**: Contains details about each author, such as first name, last name, and other relevant information.
 
-Make sure that the MySQL server is running, and the 
-database `db_books` and the user (`book-user`) have been successfully created. 
+These tables are joined by the **author_id** field, creating a many-to-many relationship between books and authors. This means each book can have multiple authors, and each author can be associated with multiple books.
 
-After running the command above (in the installation section), a jar file should be in the `target` folder. Run the command below using that jar file.   
- 
-`jar -jar target/book-app-0.0.1-SNAPSHOT.jar`
+The application uses the **H2 database** for data storage, which is an in-memory database solution ideal for development and testing.
 
-## Running the tests
+## Endpoints
 
-For the unit and integration test, run the command below: 
+### Get All Books
 
-`$ mvn test`
+**Endpoint:** `/all-books`  
+**Method:** `GET`  
+**Description:** Retrieves a list of all books with optional sorting and filtering parameters.
 
-## Request samples
+**Query Parameters:**
+- `sortBy` (optional): Specifies the field to sort by (e.g., `title`).
+- `direction` (optional, default=`asc`): Specifies the sort direction (`asc` or `desc`).
+- `title` (optional): Filters books by title.
+- `author` (optional): Filters books by author name.
 
-##### Getting a book by ID.
+**Response Model:**
+- `books`: List of books.
+- `sortDirection`: Current sort direction.
+- `title`: Current title filter.
+- `author`: Current author filter.
+- `totalBooks`: Total number of books found.
+- `errorMessage` (if applicable): Error message if no books are found.
 
-Request:
-```bash
-curl -X GET -H 'Cache-Control: no-cache' -H 'Content-Type: application/json' http://localhost:8080/api/v1/books/1
-```
+### Add Book Page
 
-Response:
-```json
-{
-    "createAt": "2018-07-10T02:33:58.000+0000",
-    "updateAt": "2018-07-10T02:33:58.000+0000",
-    "id": 1,
-    "title": "Clean Code: A Handbook of Agile Software Craftsmanship",
-    "version": 1,
-    "price": 18.45,
-    "publishingDate": "2013-01-10",
-    "authors": [
-        {
-            "createAt": "2018-07-10T02:33:58.000+0000",
-            "updateAt": "2018-07-10T02:33:58.000+0000",
-            "id": 1,
-            "firstName": "Robert",
-            "lastName": "Martin"
-        }
-    ]
-}
-```
+**Endpoint:** `/add`  
+**Method:** `GET`  
+**Description:** Displays the form for adding a new book.
 
-##### Getting the authors by book.
+### Add Book
 
-Request:
-```bash
-curl -X GET -H 'Cache-Control: no-cache' -H 'Content-Type: application/json' http://localhost:8080/api/v1/books/2/authors
-```
+**Endpoint:** `/addbook`  
+**Method:** `POST`  
+**Description:** Adds a new book to the system.
 
-Response:
-```json
-[
-    {
-        "createAt": "2018-07-10T02:33:58.000+0000",
-        "updateAt": "2018-07-10T02:33:58.000+0000",
-        "id": 4,
-        "firstName": "George",
-        "lastName": "Spafford"
-    },
-    {
-        "createAt": "2018-07-10T02:33:58.000+0000",
-        "updateAt": "2018-07-10T02:33:58.000+0000",
-        "id": 3,
-        "firstName": "Kevin",
-        "lastName": "Behr"
-    },
-    {
-        "createAt": "2018-07-10T02:33:58.000+0000",
-        "updateAt": "2018-07-10T02:33:58.000+0000",
-        "id": 2,
-        "firstName": "Gene",
-        "lastName": "Kin"
-    }
-]
-```
+**Request Model:**
+- `Book`: The book object to be added.
 
-##### Trying to get a non-existent book.
+**Response:**
+- Redirects to `/all-books` on success.
+- Displays an error message on failure.
 
-Request:
-```bash
-curl -X GET -H 'Cache-Control: no-cache' -H 'Content-Type: application/json' http://localhost:8080/api/v1/books/4
-```
+### Edit Book Page
 
-Response:
-```json
-{
-    "timestamp": "2018-07-10T02:56:09.803+0000",
-    "status": 404,
-    "error": "Not Found",
-    "message": "Book not found - field id=[4]",
-    "path": "/api/v1/books/4"
-}
-```
+**Endpoint:** `/edit/{id}`  
+**Method:** `GET`  
+**Description:** Displays the form for editing an existing book.
+
+**Path Variables:**
+- `id`: The ID of the book to be edited.
+
+### Update Book
+
+**Endpoint:** `/updatebook`  
+**Method:** `POST`  
+**Description:** Updates an existing book in the system.
+
+**Request Model:**
+- `Book`: The book object with updated information.
+
+**Response:**
+- Redirects to `/all-books` on success.
+- Displays an error message on failure.
+
+### Delete Book
+
+**Endpoint:** `/delete/{id}`  
+**Method:** `GET`  
+**Description:** Deletes a book from the system.
+
+**Path Variables:**
+- `id`: The ID of the book to be deleted.
+
+### Get Book Info
+
+**Endpoint:** `/info/{id}`  
+**Method:** `GET`  
+**Description:** Retrieves detailed information about a specific book, including related books by the same authors.
+
+**Path Variables:**
+- `id`: The ID of the book to retrieve information for.
+
+**Response Model:**
+- `book`: The book object.
+- `relatedBooks`: Set of books by the same authors.
+
+## Custom Data Binding
+
+The `BookController` class includes custom data binding for handling dates and collections of authors. This ensures that dates are properly formatted and that authors are correctly parsed from input strings.
+
+### Date Binding
+
+Dates are parsed using the `yyyy-MM-dd` format.
+
+### Authors Binding
+
+Authors are parsed from a comma-separated string, and each author's name is split into first and last names.
+
+## Running the Application
+
+1. Clone the repository.
+2. Ensure you have Java and Maven installed.
+3. Navigate to the project directory.
+4. Build the project using `mvn clean install`.
+5. Run the application using `mvn spring-boot:run`.
+6. Access the application in your web browser at `http://localhost:8080`.
+
+Alternatively, you can run the application using Docker:
+
+1. Clone the repository.
+2. Navigate to the project directory.
+3. Execute the script by running `./build_and_run.sh` in your terminal.
+
+## Dependencies
+
+- Spring Boot
+- Spring MVC
+- Spring Boot Starter Security
+- Spring Boot Starter Thymeleaf
+- Hibernate
+- H2 Database
+
