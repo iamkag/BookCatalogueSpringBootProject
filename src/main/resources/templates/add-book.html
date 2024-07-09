@@ -37,8 +37,8 @@
                                 <input type="date" th:field="*{publishingDate}" class="form-control" id="publishingDate" placeholder="Publication Date" required />
                             </div>
                             <div class="form-group col-md-8">
-                                <label for="authors" class="col-form-label">Authors (two words separated by space) eg. Joe Will, Charles May</label>
-                                <input type="text" th:field="*{authorsString}" class="form-control" id="authors" placeholder="Authors" th:value="*{authors}" pattern="\b\w+\b\s+\b\w+\b" required title="Please enter first name and last name separated by a space." />
+                                <label for="authors" class="col-form-label">Authors (multiple names separated by commas) eg. Joe Wills, Mark Antony</label>
+                                <input type="text" th:field="*{authorsString}" class="form-control" id="authors" placeholder="Authors" th:value="*{authors}" pattern="^(\b\w+\b\s+\b\w+\b)(,\s*\b\w+\b\s+\b\w+\b)*$" required title="Please enter authors' names separated by commas." />
                             </div>
                                                         
                             <div class="col-md-6">

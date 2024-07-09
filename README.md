@@ -150,7 +150,7 @@ Below is the database schema representing the relationship between the `Book` an
 | title             | String    | Not Null, Size (1, 250)  |
 | version           | Integer   | Not Null                 |
 | price             | Double    | Not Null                 |
-| publishingDate    | Date      |                          |
+| publishingDate    | Date      | yyyy-MM-dd               |
 
 ### Author Table
 
@@ -159,6 +159,15 @@ Below is the database schema representing the relationship between the `Book` an
 | id                | Long      | Primary Key, Auto Increment |
 | firstName         | String    | Not Null, Size (1, 250)  |
 | lastName          | String    | Not Null, Size (1, 250)  |
+
+
+### Author Book Table
+
+| Column Name       | Data Type | Constraints                 |
+|-------------------|-----------|-----------------------------|
+| Book_Id           | Long      | Primary Key, Auto Increment |
+| Author_Id         | Long      |      |
+
 
 ## AuditModel
 
