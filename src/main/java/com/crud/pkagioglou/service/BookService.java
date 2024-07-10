@@ -3,10 +3,14 @@ package com.crud.pkagioglou.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.crud.pkagioglou.model.Author;
 import com.crud.pkagioglou.model.Book;
 import com.crud.pkagioglou.repository.BookRepository;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 import java.util.HashSet;
 import java.util.List;
@@ -18,6 +22,9 @@ public class BookService {
 
     @Autowired
     BookRepository bookRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public List<Book> findAllBooks() {
         return bookRepository.findAll();
@@ -53,8 +60,27 @@ public class BookService {
         return true;
     }
 
+
+    @Transactional
     public void deleteById(Long bookId) {
-        bookRepository.deleteById(bookId);
+        Book book = bookRepository.findById(bookId).orElse(null);
+        if (book != null) {
+            Set<Author> authors = new HashSet<>(book.getAuthors());
+            bookRepository.deleteById(bookId);
+
+            List<Author> orphanedAuthors = bookRepository.findOrphanedAuthors();
+            for (Author author : orphanedAuthors) {
+                deleteAuthor(author);
+            }
+        }
+    }
+
+    private void deleteAuthor(Author author) {
+        // Using EntityManager to delete author
+        Author managedAuthor = entityManager.find(Author.class, author.getId());
+        if (managedAuthor != null) {
+            entityManager.remove(managedAuthor);
+        }
     }
 
     public boolean addBook(Book book) {
